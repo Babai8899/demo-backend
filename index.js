@@ -6,8 +6,8 @@ const app = express();
 // import convoRoutes from './routes/convoRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
-const db_password = process.env.MONGODB_PASSWORD;
-const mongodburl = 'mongodb+srv://indrababai9898:' + db_password + '@learningcluster.4ngkm.mongodb.net/convomodel';
+// const db_password = process.env.MONGODB_PASSWORD;
+const mongodburl = 'mongodb+srv://indrababai9898:' + "00188999" + '@learningcluster.4ngkm.mongodb.net/convomodel';
 
 const url = mongodburl; // Replace with your MongoDB connection URL
 connect(url);

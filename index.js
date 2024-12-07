@@ -1,31 +1,31 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const dbConfig = require('./config/database.config.js');
-const mongoose = require('mongoose');
-const UserRoute = require('./app/routes/UserRoutes.js')
-
+import express, { json } from 'express';
+import pkg from 'mongoose';
+const { connect, connection } = pkg;
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }))
+// import convoRoutes from './routes/convoRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
-app.use(bodyParser.json())
+const db_password = process.env.MONGODB_PASSWORD;
+const mongodburl = 'mongodb+srv://indrababai9898:' + db_password + '@learningcluster.4ngkm.mongodb.net/convomodel';
 
-app.get('/', (req, res) => {
-    res.json({"message": "Hello Crud Node Express"});
+const url = mongodburl; // Replace with your MongoDB connection URL
+connect(url);
+
+app.use(json());
+
+try {
+    connection.on('open', () => {
+        console.log('Connected to the database');
+    })
+} catch (error) {
+    console.log("Error: " + error);
+}
+
+const port = 8001;
+app.listen(port, () => {
+    console.log('Server started on port ' + port);
 });
 
-mongoose.Promise = global.Promise;
-
-mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log("Databse Connected Successfully!!");
-    app.listen(3000, () => {
-        console.log("Server is listening on port 3000");
-    });    
-}).catch(err => {
-    console.log('Could not connect to the database', err);
-    process.exit();
-});
-
-app.use('/user',UserRoute)
+// app.use('/convo', convoRoutes);
+app.use('/user', userRoutes);

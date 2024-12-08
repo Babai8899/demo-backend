@@ -6,7 +6,9 @@ const createUser = async (req, res) => {
         userName: req.body.userName,
         password: req.body.password,
         email: req.body.email,
-        phone: req.body.phone
+        phone: req.body.phone,
+        gender: req.body.gender,
+        address: req.body.address
     });
 
     await user.save().then(data => {
@@ -24,6 +26,13 @@ const createUser = async (req, res) => {
 }
 
 const logIn = async (req, res) => {
+    if (!req.body.userId || !req.body.password) {
+        res.status(400).send({
+            status: "fail",
+            message: "User id and password required!!"
+        });
+        return;
+    }
     const user = new userData({
         userId: req.body.userId,
         password: req.body.password
@@ -88,9 +97,11 @@ const findOne = async (req, res) => {
 const update = async (req, res) => {
     const id = req.params.id;
     const phone = req.body.phone;
+    const address = req.body.address;
     await userData.findOne({ userId: id }).then(data => {
         if (data) {
             data.phone = phone;
+            data.address = address;
             data.save().then(data => {
                 res.send({
                     message: "User updated successfully",

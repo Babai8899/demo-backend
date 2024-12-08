@@ -27,11 +27,63 @@ const userSchema = Schema({
     email: {
         type: String,
         required: true,
+        validate: function (value) {
+            const emailReg = "^[a-zA-Z0-9+_.-]+(@(gmail|yahoo).com){1}$";
+            return value.match(emailReg);
+        }
     },
     phone: {
-        type: Number,
+        type: String,
         required: true,
+        validate: function (value) {
+            const phoneReg = "^[6-9]{1}[0-9]{9}$";
+            return value.match(phoneReg);
+        }
+    },
+
+    gender: {
+        type: String,
+        required: true,
+        validate: function (value) {
+            const genderReg = "^(male|female)$";
+            return value.match(genderReg);
+        }
+    },
+
+    address: {
+        addressLine1: {
+            type: String,
+            required: true,
+        },
+        addressLine2: {
+            type: String,
+        },
+        city: {
+            type: String,
+            required: true,
+            validate: function (value) {
+                const cityReg = "^[a-zA-Z]{3,}$";
+                return value.match(cityReg);
+            }
+        },
+        state: {
+            type: String,
+            required: true,
+            validate: function (value) {
+                const stateReg = "^[a-zA-Z]{3,}$";
+                return value.match(stateReg);
+            }
+        },
+        pincode: {
+            type: String,
+            required: true,
+            validate: function (value) {
+                const pincodeReg = "^[0-9]{6}$";
+                return value.match(pincodeReg);
+            }
+        }
     }
+
 });
 
 var userData = model('userData', userSchema);

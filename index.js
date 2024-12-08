@@ -3,6 +3,17 @@ import pkg from 'mongoose';
 const { connect, connection } = pkg;
 const app = express();
 
+import cors from 'cors';
+
+app.use(cors());
+
+const corsOptions = {
+    origin: '*', // Replace with your frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  };
+  
+  app.use(cors(corsOptions));
+
 // import convoRoutes from './routes/convoRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 

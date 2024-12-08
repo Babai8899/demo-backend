@@ -1,6 +1,13 @@
 import userData from "../models/userModel.js";
 
 const createUser = async (req, res) => {
+    if (!req.body.userId || !req.body.userName || !req.body.password || !req.body.email || !req.body.phone || !req.body.gender || !req.body.address) {
+        res.status(400).send({
+            status: "fail",
+            message: "User id, user name, password, email, phone, gender and address required!!"
+        });
+        return;
+    }
     const user = new userData({
         userId: req.body.userId,
         userName: req.body.userName,

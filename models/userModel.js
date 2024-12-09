@@ -4,8 +4,10 @@ const userSchema = Schema({
     userId: {
         type: String,
         required: true,
+        unique: true,
         validate: function (value) {
-            return value.length == 7;
+            const idReg = "^[a-zA-Z0-9]{7}$";
+            return value.match(idReg);
         }
     },
     userName: {

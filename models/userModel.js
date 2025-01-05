@@ -88,5 +88,5 @@ const userSchema = Schema({
 
 });
 
-var userData = model('userData', userSchema);
+const userData = model('userData', userSchema);
 export default userData;

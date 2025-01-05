@@ -37,8 +37,8 @@ const trainSchema = Schema({
         type: Array,
         required: true,
         validate: function (value) {
-            for (let i = 0; i < value.length; i++) {
-                if (value[i] < 1 || value[i] > 7) {
+            for (const element of value) {
+                if (element < 1 || element > 7) {
                     return false;
                 }
             }
@@ -47,5 +47,5 @@ const trainSchema = Schema({
     }
 });
 
-var trainData = model('trainData', trainSchema);
+const trainData = model('trainData', trainSchema);
 export default trainData;

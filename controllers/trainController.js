@@ -25,9 +25,9 @@ const findAll = async (req, res) => {
 
             let trains = [];
 
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].runsOn.includes(Math.round(day))) {
-                    trains.push(data[i]);
+            for (const element of data) {
+                if (element.runsOn.includes(Math.round(day))) {
+                    trains.push(element);
                 }
             }
             res.send(trains);

@@ -1,4 +1,5 @@
 import userData from "../models/userModel.js";
+import bcrypt from "bcrypt";
 
 const createUser = async (req, res) => {
     if (!req.body.userId || !req.body.userName || !req.body.password || !req.body.email || !req.body.phone || !req.body.gender || !req.body.address) {
@@ -8,28 +9,49 @@ const createUser = async (req, res) => {
         });
         return;
     }
-    const user = new userData({
-        userId: req.body.userId,
-        userName: req.body.userName,
-        password: req.body.password,
-        email: req.body.email,
-        phone: req.body.phone,
-        gender: req.body.gender,
-        address: req.body.address
-    });
 
-    await user.save().then(data => {
-        res.send({
-            message: "User saved successfully!!",
-            user: data
-        });
-        console.log(data);
+    const id = req.body.userId;
+
+    await userData.findOne({ userId: id }).then(data => {
+        if (data) {
+            res.status(400).send({
+                status: "fail",
+                message: "User id already exists!!"
+            });
+        }
+        else {
+            const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+            const user = new userData({
+                userId: req.body.userId,
+                userName: req.body.userName,
+                password: hashedPassword,
+                email: req.body.email,
+                phone: req.body.phone,
+                gender: req.body.gender,
+                address: req.body.address
+            });
+
+            user.save().then(data => {
+                res.send({
+                    message: "User saved successfully!!",
+                    user: data
+                });
+                console.log(data);
+            }).catch(err => {
+                res.status(500).send({
+                    status: "error",
+                    message: err.message || "Some error occurred while saving User"
+                });
+            });
+        }
     }).catch(err => {
         res.status(500).send({
             status: "error",
-            message: err.message || "Some error occurred while saving User"
+            message: err.message || "Some error occurred while checking User id"
         });
     });
+
+
 }
 
 const logIn = async (req, res) => {
@@ -46,7 +68,8 @@ const logIn = async (req, res) => {
     });
     await userData.findOne({ userId: user.userId }).then(data => {
         if (data) {
-            if (data.password === user.password) {
+            const passwordMatch = bcrypt.compareSync(user.password, data.password);
+            if (passwordMatch) {
                 res.send({
                     message: "User logged in successfully!!",
                     user: data
@@ -146,12 +169,12 @@ const remove = async (req, res) => {
             });
         }
     })
-    .catch(err => {
-        res.status(500).send({
-            status: "error",
-            message: err.message || "Some error occurred while deleting User"
+        .catch(err => {
+            res.status(500).send({
+                status: "error",
+                message: err.message || "Some error occurred while deleting User"
+            });
         });
-    });
 }
 
 export { createUser, findAll, findOne, update, remove, logIn };

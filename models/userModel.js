@@ -21,10 +21,10 @@ const userSchema = Schema({
     password: {
         type: String,
         required: true,
-        validate: function (value) {
-            const passReg = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8}$";
-            return value.match(passReg);
-        }
+        // validate: function (value) {
+        //     const passReg = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8}$";
+        //     return value.match(passReg);
+        // }
     },
     email: {
         type: String,

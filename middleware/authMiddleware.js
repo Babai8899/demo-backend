@@ -6,7 +6,7 @@ function verifyToken(req, res, next) {
     const token = req.header('Authorization');
     if (!token) return res.status(401).json({ error: 'Access denied' });
 
-    const secretKey = process.env.secretKey;
+    const secretKey = process.env.SECRET_KEY;
 
     try {
         const decoded = verify(token, secretKey);

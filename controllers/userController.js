@@ -74,7 +74,7 @@ const logIn = async (req, res) => {
         if (data) {
             const passwordMatch = bcrypt.compareSync(user.password, data.password);
             if (passwordMatch) {
-                const secretKey = process.env.secretKey;
+                const secretKey = process.env.SECRET_KEY;
                 const token = jwt.sign({ userId: data.userId }, secretKey, { expiresIn: '1h' });
                 console.log(token);
                 res.status(200).json({

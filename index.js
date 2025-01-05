@@ -14,9 +14,10 @@ const corsOptions = {
   
   app.use(cors(corsOptions));
 
-// import convoRoutes from './routes/convoRoutes.js';
+
 import userRoutes from './routes/userRoutes.js';
 import TrainRoutes from './routes/trainRoutes.js';
+import protectedRoute from './routes/protectedRoute.js';
 
 const db_password = process.env.MONGODB_PASSWORD;
 const mongodburl = 'mongodb+srv://indrababai9898:' + db_password + '@learningcluster.4ngkm.mongodb.net/convomodel';
@@ -39,6 +40,7 @@ app.listen(port, () => {
     console.log('Server started on port ' + port);
 });
 
-// app.use('/convo', convoRoutes);
+
 app.use('/user', userRoutes);
-app.use('/train', TrainRoutes) 
+app.use('/train', TrainRoutes);
+app.use('/protected', protectedRoute);

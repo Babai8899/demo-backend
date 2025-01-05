@@ -1,5 +1,9 @@
 import userData from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 const createUser = async (req, res) => {
     if (!req.body.userId || !req.body.userName || !req.body.password || !req.body.email || !req.body.phone || !req.body.gender || !req.body.address) {
@@ -70,7 +74,11 @@ const logIn = async (req, res) => {
         if (data) {
             const passwordMatch = bcrypt.compareSync(user.password, data.password);
             if (passwordMatch) {
-                res.send({
+                const secretKey = process.env.secretKey;
+                const token = jwt.sign({ userId: data.userId }, secretKey, { expiresIn: '1h' });
+                console.log(token);
+                res.status(200).json({
+                    token: token,
                     message: "User logged in successfully!!",
                     user: data
                 });
